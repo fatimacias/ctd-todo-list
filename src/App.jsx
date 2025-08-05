@@ -1,18 +1,23 @@
 import { useState } from 'react';
 import './App.css';
-import todoData from './assets/data.json';
 import Header from './Header';
 import TodoForm from './TodoForm';
 import TodoList from './TodoList';
 function App() {
-  const [todo, setTodo] = useState(todoData.todo);
-  const [newTodo, setNewTodo] = useState('Add new todo');
+  const [todoList, setTodoList] = useState([]);
+  function addTodo(title)
+  {
+    const newTodo = {
+      id : Date.now(),
+      title
+    };
+    setTodoList([...todoList,newTodo]);
+  }
   return(
      <main>
       <Header/>
-      <TodoForm/>
-      <p>{newTodo}</p>
-      <TodoList todos={todo}></TodoList>
+      <TodoForm onAddTodo={addTodo}/>
+      <TodoList todoList={todoList}></TodoList>
     </main>
   )
 }
