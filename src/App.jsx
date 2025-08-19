@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import './App.css';
+import TodoForm from './features/TodoList/TodoForm';
+import TodoList from './features/TodoList/TodoList';
 import Header from './Header';
-import TodoForm from './TodoForm';
-import TodoList from './TodoList';
 function App() {
   const [todoList, setTodoList] = useState([]);
   
