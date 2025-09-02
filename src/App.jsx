@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import TodoForm from './features/TodoList/TodoForm';
 import TodoList from './features/TodoList/TodoList';
+import TodosViewForm from './features/TodosViewForm';
 import Header from './Header';
 import { getFetch, patchFetch, postFetch } from "./shared/airtableClient";
 import {
@@ -18,11 +19,15 @@ function App() {
   const [errorMessage, setErrorMessage] = useState("");
   const [isSaving, setIsSaving] = useState(false);
 
+  const [sortField, setSortField] = useState("createdTime"); 
+  const [sortDirection, setSortDirection] = useState("desc"); 
+  const [queryString, setQueryString] = useState("");
+
   useEffect(()=> {
     const fetchTodos = async () => {
       setIsLoading(true);      
       try{
-        const data = await getFetch();
+        const data = await getFetch(sortField,sortDirection,queryString);
         setTodoList(mapRecordsToTodos(data.records));
       }
       catch(error){
@@ -33,7 +38,16 @@ function App() {
       }
     };
     fetchTodos();
-  },[])
+  },[sortField, sortDirection, queryString])
+
+  const refreshList = async () => {
+    try {
+      const data = await getFetch(sortField, sortDirection, queryString);
+      setTodoList(mapRecordsToTodos(data.records));
+    } catch (error) {
+      setErrorMessage(error.message);
+    }
+  };
 
   const addTodo = async(title) =>
   {
@@ -43,6 +57,7 @@ function App() {
       const data = await postFetch(payload);
       const [created] = mapRecordsToTodos(data.records);
       setTodoList((prev) => [...prev, created]);
+      await refreshList();
     }
     catch(error){
       console.log(error);
@@ -66,6 +81,7 @@ function App() {
     try {
       const payload = toCompletePayload(id);
       await patchFetch(payload);
+      await refreshList();
     } catch (err) {
       setErrorMessage(`${err.message}. Reverting completion...`);
       setTodoList((prev) =>
@@ -90,6 +106,7 @@ function App() {
         isCompleted: edited.isCompleted,
       });
       await patchFetch(payload);
+      await refreshList();
     } catch (err) {
       setErrorMessage(`${err.message}. Reverting todo...`);
       setTodoList((prev) =>
@@ -108,6 +125,19 @@ function App() {
         onCompleteTodo={completeTodo}
         onUpdateTodo = {updateTodo}
         isLoading = {isLoading}></TodoList>
+
+      <hr/>
+
+      <TodosViewForm
+        sortField={sortField}
+        setSortField={setSortField}
+        sortDirection={sortDirection}
+        setSortDirection={setSortDirection}
+        queryString={queryString}
+        setQueryString={setQueryString}
+      >
+      </TodosViewForm>
+      
      {errorMessage && (
       <div className="error-banner" role="alert" aria-live="assertive">
         <hr />
