@@ -7,14 +7,15 @@ function authHeaders() {
   };
 }
 
-const encodeUrl = (sortField, sortDirection, queryString ) => {
-    let sortQuery = `sort[0][field]=${sortField}&sort[0][direction]=${sortDirection}`;
-    let searchQuery = "";
-    if (queryString && queryString.trim() !== "") {
-      searchQuery = `&filterByFormula=SEARCH("${queryString}",+title)`;
-    }
-     return encodeURI(`${airtable_url}?${sortQuery}${searchQuery}`);
-  };
+export function encodeUrlClient(sortField, sortDirection, queryString)
+{
+  let sortQuery = `sort[0][field]=${sortField}&sort[0][direction]=${sortDirection}`;
+  let searchQuery = "";
+  if (queryString && queryString.trim() !== "") {
+    searchQuery = `&filterByFormula=SEARCH("${queryString}",+title)`;
+  }
+  return encodeURI(`${airtable_url}?${sortQuery}${searchQuery}`);
+};
 
 export async function safeFetch(options,url=airtable_url) {
   const resp = await fetch(url, options);
@@ -27,8 +28,7 @@ export async function safeFetch(options,url=airtable_url) {
   }
   return resp.json();
 }
-export async function getFetch(sortField, sortDirection,queryString) {
-  const url = encodeUrl(sortField,sortDirection,queryString);
+export async function getFetch(url) {
   return safeFetch({
     method: "GET",
     headers: authHeaders(),
