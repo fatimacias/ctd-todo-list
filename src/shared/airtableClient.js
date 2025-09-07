@@ -7,9 +7,17 @@ function authHeaders() {
   };
 }
 
+const encodeUrl = (sortField, sortDirection, queryString ) => {
+    let sortQuery = `sort[0][field]=${sortField}&sort[0][direction]=${sortDirection}`;
+    let searchQuery = "";
+    if (queryString && queryString.trim() !== "") {
+      searchQuery = `&filterByFormula=SEARCH("${queryString}",+title)`;
+    }
+     return encodeURI(`${airtable_url}?${sortQuery}${searchQuery}`);
+  };
 
-export async function safeFetch(options) {
-  const resp = await fetch(airtable_url, options);
+export async function safeFetch(options,url=airtable_url) {
+  const resp = await fetch(url, options);
   if (!resp.ok) {
     const text = await resp.text().catch(() => "");
     const detail = text?.slice(0, 300) || "";
@@ -19,11 +27,12 @@ export async function safeFetch(options) {
   }
   return resp.json();
 }
-export async function getFetch() {
+export async function getFetch(sortField, sortDirection,queryString) {
+  const url = encodeUrl(sortField,sortDirection,queryString);
   return safeFetch({
     method: "GET",
     headers: authHeaders(),
-  });
+  },url);
 }
 
 export async function postFetch(payload) {
