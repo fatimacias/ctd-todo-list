@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import './App.css';
 import TodoForm from './features/TodoList/TodoForm';
 import TodoList from './features/TodoList/TodoList';
 import TodosViewForm from './features/TodosViewForm';
 import Header from './Header';
-import { getFetch, patchFetch, postFetch } from "./shared/airtableClient";
+import { encodeUrlClient, getFetch, patchFetch, postFetch } from "./shared/airtableClient";
 import {
   mapRecordsToTodos,
   toCompletePayload,
@@ -23,11 +23,15 @@ function App() {
   const [sortDirection, setSortDirection] = useState("desc"); 
   const [queryString, setQueryString] = useState("");
 
+  const encodeUrl = useCallback(()=>{
+     return encodeUrlClient(sortField,sortDirection,queryString)
+  },[sortField, sortDirection, queryString]);
+
   useEffect(()=> {
     const fetchTodos = async () => {
       setIsLoading(true);      
       try{
-        const data = await getFetch(sortField,sortDirection,queryString);
+        const data = await getFetch(encodeUrl());
         setTodoList(mapRecordsToTodos(data.records));
       }
       catch(error){
@@ -38,11 +42,11 @@ function App() {
       }
     };
     fetchTodos();
-  },[sortField, sortDirection, queryString])
+  },[encodeUrl])
 
   const refreshList = async () => {
     try {
-      const data = await getFetch(sortField, sortDirection, queryString);
+      const data = await getFetch(encodeUrl());
       setTodoList(mapRecordsToTodos(data.records));
     } catch (error) {
       setErrorMessage(error.message);
