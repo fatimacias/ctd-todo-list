@@ -1,29 +1,59 @@
 import { useState } from "react";
+import styled from 'styled-components';
 import TextInputWithLabel from "../../shared/TextInputWithLabel";
 
-function TodoForm({onAddTodo,isSaving}){
+const StyledForm = styled.form`
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 8px;
+  background: white;
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 8px; 
+  background: white;
+  border-radius: 8px;
+`;
 
-    const [workingTodoTitle, setWorkingTodoTitle] = useState("");
-    function handleAddTodo(event)
-    {
-        event.preventDefault();
-        onAddTodo(workingTodoTitle);
-        setWorkingTodoTitle("");
-    }
+const StyledButton = styled.button`
+  padding: 10px 16px;
+  border: none;
+  border-radius: 4px;
+  background: var(--brand, #0077ff);
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
 
-    return (
-        <form onSubmit={handleAddTodo}>
-            <TextInputWithLabel 
-                value={workingTodoTitle}
-                label= "Todo"
-                elementId = "todoTitle"
-                onChange={(e) => setWorkingTodoTitle(e.target.value)} />
+  &:disabled {
+    background: #bbb;
+    cursor: not-allowed;
+    font-style: italic; 
+`;
 
-            <button type="submit" disabled={workingTodoTitle.trim() === ""}>
-                {isSaving ? 'Saving...' : 'Add Todo'}
-            </button>
-        </form>        
-    );
+function TodoForm({ onAddTodo, isSaving }) {
+  const [workingTodoTitle, setWorkingTodoTitle] = useState("");
+  function handleAddTodo(event) 
+  {
+    event.preventDefault();
+    onAddTodo(workingTodoTitle);
+    setWorkingTodoTitle("");
+  }
+
+  return (
+    <StyledForm onSubmit={handleAddTodo}>
+      <TextInputWithLabel
+        value={workingTodoTitle}
+        label= "Todo"
+        elementId = "todoTitle"
+        onChange={(e) => setWorkingTodoTitle(e.target.value)}
+      />
+      <StyledButton type="submit" disabled={workingTodoTitle.trim() === ""}>
+        {isSaving ? "Saving..." : "Add Todo"}
+      </StyledButton>
+    </StyledForm>
+  );
 }
 
 export default TodoForm;
