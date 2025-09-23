@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import './App.css';
+import styles from './App.module.css';
 import TodoForm from './features/TodoList/TodoForm';
 import TodoList from './features/TodoList/TodoList';
 import TodosViewForm from './features/TodosViewForm';
@@ -11,8 +12,6 @@ import {
   toCreatePayload,
   toUpdatePayload
 } from "./shared/todoMapping";
-
-
 function App() {
   const [todoList, setTodoList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -120,6 +119,7 @@ function App() {
   };
 
   return(
+    <div className={styles.appShell}>
      <main>
       <Header/>
       <TodoForm onAddTodo={addTodo} 
@@ -141,15 +141,15 @@ function App() {
         setQueryString={setQueryString}
       >
       </TodosViewForm>
-      
      {errorMessage && (
-      <div className="error-banner" role="alert" aria-live="assertive">
+      <div className={`error-banner ${styles.errorBox}`} role="alert" aria-live="assertive">
         <hr />
         <p>{errorMessage}</p>
         <button onClick={() => setErrorMessage("")}>Dismiss</button>
       </div>
 )}
     </main>
+  </div>
   )
 }
 
