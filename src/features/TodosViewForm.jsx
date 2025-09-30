@@ -7,37 +7,89 @@ const StyledForm = styled.form`
   margin-top: 0.75rem;
   padding: 8px;
   margin-bottom: 20px;
+  
+  @media (max-width: 768px) {
+    gap: 1rem;
+  }
 `;
 
 const Row = styled.div`
   display: flex;
   gap: 0.75rem;
   align-items: center;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
 `;
 
 const StyledInput = styled.input`
   flex: 1;
   padding: 8px 10px;
   border: 1px solid #ddd;
-  border-radius: 6px;
+  border-radius: var(--radius, 6px);
   font-size: 14px;
+  
+  &:focus {
+    outline: none;
+    border-color: var(--brand, #2563eb);
+    box-shadow: 0 0 3px rgba(37, 99, 235, 0.3);
+  }
+  
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const StyledSelect = styled.select`
   padding: 8px 10px;
   border: 1px solid #ddd;
-  border-radius: 6px;
+  border-radius: var(--radius, 6px);
   font-size: 14px;
+  
+  &:focus {
+    outline: none;
+    border-color: var(--brand, #2563eb);
+    box-shadow: 0 0 3px rgba(37, 99, 235, 0.3);
+  }
+  
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const StyledButton = styled.button`
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius, 6px);
   padding: 8px 12px;
-  background: var(--brand, #0077ff);
+  background: var(--brand, #2563eb);
   color: #fff;
   font-size: 14px;
   cursor: pointer;
+  transition: opacity 0.2s ease;
+  white-space: nowrap;
+  
+  &:hover {
+    opacity: 0.9;
+  }
+  
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 10px 12px;
+  }
+`;
+
+const Label = styled.label`
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--fg, #1f2937);
+  margin-bottom: 2px;
+  
+  @media (max-width: 768px) {
+    margin-bottom: 4px;
+  }
 `;
 
 export default function TodosViewForm({
@@ -62,7 +114,7 @@ export default function TodosViewForm({
   return (
     <StyledForm onSubmit={preventRefresh}>
       <Row>
-        <label htmlFor="search">Search todos:</label>
+        <Label htmlFor="search">Search todos:</Label>
         <StyledInput
           id="search"
           type="text"
@@ -83,7 +135,7 @@ export default function TodosViewForm({
       </Row>
 
       <Row>
-        <label htmlFor="sortField">Sort by</label>
+        <Label htmlFor="sortField">Sort by</Label>
         <StyledSelect
           id="sortField"
           value={sortField}
@@ -93,7 +145,7 @@ export default function TodosViewForm({
           <option value="createdTime">Time added</option>
         </StyledSelect>
 
-        <label htmlFor="sortDirection">Direction</label>
+        <Label htmlFor="sortDirection">Direction</Label>
         <StyledSelect
           id="sortDirection"
           value={sortDirection}
