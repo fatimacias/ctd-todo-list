@@ -1,0 +1,56 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--fg, #1f2937);
+  margin-bottom: 2px;
+}
+
+.input {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: var(--radius, 6px);
+  font-size: 14px;
+  transition: all 0.2s ease;
+  background: white;
+  color: var(--fg, #1f2937);
+  height: 40px;
+  box-sizing: border-box;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--brand, #2563eb);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.input::placeholder {
+  color: var(--muted, #6b7280);
+}
+
+/* Focus States */
+.input:focus {
+  outline: none;
+  border-color: var(--brand, #2563eb);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .container {
+    width: 100%;
+  }
+  
+  .input {
+    padding: 12px;
+    font-size: 16px; /* Prevents zoom on iOS */
+    height: 44px;
+  }
+}

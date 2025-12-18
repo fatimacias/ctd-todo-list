@@ -1,9 +1,16 @@
 .item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  border-bottom: 1px solid #eee;
-  padding: 10px 0;  
+  gap: 12px;
+  transition: background-color 0.2s ease;
+  min-height: 44px;
+}
+
+.item:hover {
+  background-color: #f9fafb;
+  border-radius: var(--radius, 6px);
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
 .item:last-child {
@@ -13,10 +20,117 @@
 .checkbox {
   width: 16px;
   height: 16px;
+  cursor: pointer;
+  accent-color: var(--brand, #2563eb);
+  flex-shrink: 0;
+}
+
+.item span {
+  flex: 1;
+  text-align: center;
+  color: var(--fg, #1f2937);
+  font-size: 0.875rem;
+  line-height: 1.4;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: var(--radius, 4px);
+  transition: all 0.2s ease;
+}
+
+.item span:hover {
+  background: rgba(37, 99, 235, 0.05);
+  color: var(--brand, #2563eb);
 }
 
 .buttonGroup {
   display: inline-flex;
-  gap: 8px;
+  gap: 6px;
   margin-left: 8px;
+  flex-shrink: 0;
+}
+
+.buttonGroup button {
+  padding: 4px 8px;
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  border-radius: var(--radius, 4px);
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  color: var(--fg, #1f2937);
+}
+
+.buttonGroup button:hover {
+  background: #f3f4f6;
+  border-color: var(--brand, #2563eb);
+  color: var(--brand, #2563eb);
+}
+
+.buttonGroup button:first-child:hover {
+  background: #fef2f2;
+  border-color: #ef4444;
+  color: #dc2626;
+}
+
+/* Focus States */
+.item:focus-within {
+  background-color: #f0f9ff;
+  border-color: var(--brand, #2563eb);
+}
+
+.checkbox:focus {
+  outline: 2px solid var(--brand, #2563eb);
+  outline-offset: 2px;
+}
+
+.buttonGroup button:focus {
+  outline: 2px solid var(--brand, #2563eb);
+  outline-offset: 2px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .item {
+    padding: 8px 0;
+    min-height: 40px;
+  }
+  
+  .item span {
+    font-size: 0.8rem;
+  }
+  
+  .buttonGroup {
+    flex-direction: column;
+    gap: 4px;
+    margin-left: 0;
+    margin-top: 6px;
+  }
+  
+  .buttonGroup button {
+    width: 100%;
+    padding: 4px 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 10px 0;
+    min-height: auto;
+  }
+  
+  .item span {
+    text-align: left;
+    width: 100%;
+  }
+  
+  .buttonGroup {
+    width: 100%;
+    flex-direction: row;
+    gap: 6px;
+    margin-left: 0;
+  }
 }
